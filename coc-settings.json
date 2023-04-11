@@ -1,0 +1,6 @@
+{
+    "coc.preferences.formatOnType": true,
+    "suggest.noselect": true,
+    "Lua.diagnostics.globals": ["vim"],
+    "Lua.runtime.version": "LuaJIT"
+}
