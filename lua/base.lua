@@ -13,6 +13,8 @@ vim.call('plug#begin', '~/.config/nvim/plugged')
     Plug 'windwp/nvim-ts-autotag'
     Plug 'tpope/vim-fugitive'
     Plug 'rebelot/kanagawa.nvim'
+    Plug 'vim-airline/vim-airline'
+    Plug 'vim-airline/vim-airline-themes'
 
 vim.call('plug#end')
 
@@ -32,8 +34,19 @@ vim.opt.ignorecase = true
 vim.opt.wrap = true
 -- vim.opt.showtabline = 2
 -- vim.opt.termguicolors = true
+-- Avoid coc issue
 vim.opt.backup = false
+vim.opt.writebackup = false
 vim.opt.swapfile = false
+vim.opt.updatetime = 300
+
+-- Having longer updatetime (default is 4000 ms = 4s) leads to noticeable
+-- delays and poor user experience
+vim.opt.updatetime = 300
+
+-- Always show the signcolumn, otherwise it would shift the text each time
+-- diagnostics appeared/became resolved
+vim.opt.signcolumn = "yes"
 
 vim.cmd('colorscheme kanagawa')
 
@@ -66,5 +79,4 @@ vim.keymap.set('n', '<Leader>[', '[c')
 vim.keymap.set('n', '[tabutil]', '<Nop>')
 vim.keymap.set('n', '<Leader>t', '[tabutil]', {remap=true})
 vim.keymap.set('n', '[tabutil]c', '<Cmd>tabclose<CR>')
-
 
