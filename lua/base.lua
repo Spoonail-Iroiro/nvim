@@ -8,6 +8,9 @@ vim.call('plug#begin', '~/.config/nvim/plugged')
     Plug 'lambdalisue/fern.vim'
     Plug 'lambdalisue/fern-mapping-git.vim'
     Plug 'lambdalisue/fern-git-status.vim'
+    Plug 'lambdalisue/nerdfont.vim'
+    Plug 'lambdalisue/fern-renderer-nerdfont.vim'
+    Plug 'lambdalisue/glyph-palette.vim'
     Plug('nvim-treesitter/nvim-treesitter', {['do'] = ':TSUpdate'})
     Plug 'jiangmiao/auto-pairs'
     Plug 'windwp/nvim-ts-autotag'
@@ -15,6 +18,8 @@ vim.call('plug#begin', '~/.config/nvim/plugged')
     Plug 'rebelot/kanagawa.nvim'
     Plug 'vim-airline/vim-airline'
     Plug 'vim-airline/vim-airline-themes'
+    Plug 'nvim-lua/plenary.nvim'
+    Plug ('nvim-telescope/telescope.nvim', {tag = '0.1.1'})
 
 vim.call('plug#end')
 
@@ -71,6 +76,12 @@ vim.keymap.set('n', 'sW', '<C-w>p')
 vim.keymap.set('n', '<C-f>', '<C-d>')
 vim.keymap.set('n', '<C-b>', '<C-u>')
 
+-- Avoid yank when visual mode
+vim.keymap.set({'x', 'v'}, 'p', 'P')
+
+-- Move between bufs by <C-Left>/<C-Right>
+vim.keymap.set({'n', 'i'}, '<C-Right>', '<Cmd>:bnext<CR>')
+vim.keymap.set({'n', 'i'}, '<C-Left>', '<Cmd>:bprev<CR>')
 -- Avoid press c in diff
 vim.keymap.set('n', '<Leader>]', ']c')
 vim.keymap.set('n', '<Leader>[', '[c')
