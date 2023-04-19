@@ -1,11 +1,13 @@
 vim.g.coc_global_extensions = {
     'coc-json',
     'coc-html',
-    'coc-lua'
+    'coc-lua',
+    'coc-jedi',
+    'coc-diagnostic'
 }
 
 vim.keymap.set('n', '[coc]', '<Nop>')
-vim.keymap.set({'n', 'x', 'o'}, '<Leader>c', '[coc]', {remap=true})
+vim.keymap.set({ 'n', 'x', 'o' }, '<Leader>c', '[coc]', { remap = true })
 
 -- Autocomplete
 function _G.check_back_space()
@@ -18,8 +20,9 @@ end
 -- no select by setting `"suggest.noselect": true` in your configuration file
 -- NOTE: Use command ':verbose imap <tab>' to make sure Tab is not mapped by
 -- other plugins before putting this into your config
-local opts = {silent = true, noremap = true, expr = true, replace_keycodes = false}
-vim.keymap.set("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opts)
+local opts = { silent = true, noremap = true, expr = true, replace_keycodes = false }
+vim.keymap.set("i", "<TAB>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()',
+opts)
 vim.keymap.set("i", "<S-TAB>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opts)
 
 -- Make <CR> to accept selected completion item or notify coc.nvim to format
@@ -31,7 +34,7 @@ vim.keymap.set("n", "[coc]g", "<Cmd>CocDiagnostics<CR>")
 -- Use K to show documentation in preview window
 function _G.show_docs()
     local cw = vim.fn.expand('<cword>')
-    if vim.fn.index({'vim', 'help'}, vim.bo.filetype) >= 0 then
+    if vim.fn.index({ 'vim', 'help' }, vim.bo.filetype) >= 0 then
         vim.api.nvim_command('h ' .. cw)
     elseif vim.api.nvim_eval('coc#rpc#ready()') then
         vim.fn.CocActionAsync('doHover')
@@ -40,7 +43,7 @@ function _G.show_docs()
     end
 end
 
-vim.keymap.set('n', 'K', '<CMD>lua _G.show_docs()<CR>', {silent=true})
+vim.keymap.set('n', 'K', '<CMD>lua _G.show_docs()<CR>', { silent = true })
 
 -- Highlight the symbol and its references on a CursorHold event(cursor is idle)
 vim.api.nvim_create_augroup("CocGroup", {})
@@ -57,7 +60,7 @@ vim.api.nvim_create_autocmd("CursorHold", {
 -- Setup formatexpr specified filetype(s)
 -- !! Target filetypes; if some format issue occured, remove some filetypes from here
 local format_selected_filetypes = "typescript,json,python"
-vim.keymap.set({"n", "x"}, "[coc]f", "<Plug>(coc-format-selected)", {silent = true})
+vim.keymap.set({ "n", "x" }, "[coc]f", "<Plug>(coc-format-selected)", { silent = true })
 
 vim.api.nvim_create_autocmd("FileType", {
     group = "CocGroup",
@@ -76,11 +79,11 @@ vim.api.nvim_create_autocmd("User", {
 
 
 -- Symbol renaming
-vim.keymap.set("n", "[coc]rn", "<Plug>(coc-rename)", {silent = true})
+vim.keymap.set("n", "[coc]rn", "<Plug>(coc-rename)", { silent = true })
 
 -- Apply codeAction to the selected region
 --@diagnostic disable-next-line: redefined-local
-local opts = {silent = true, nowait = true}
+local opts = { silent = true, nowait = true }
 vim.keymap.set("x", "[coc]a", "<Plug>(coc-codeaction-selected)", opts)
 vim.keymap.set("n", "[coc]a", "<Plug>(coc-codeaction-selected)", opts)
 
@@ -100,6 +103,8 @@ vim.keymap.set("n", "[coc]r", "<Plug>(coc-codeaction-refactor-selected)", { sile
 
 -- Run the Code Lens actions on the current line
 vim.keymap.set("n", "[coc]cl", "<Plug>(coc-codelens-action)", opts)
+vim.keymap.set("n", "[g", "<Plug>(coc-diagnostic-prev)", { silent = true })
+vim.keymap.set("n", "]g", "<Plug>(coc-diagnostic-next)", { silent = true })
 
 -- Map function and class text objects
 -- NOTE: Requires 'textDocument.documentSymbol' support from the language server
@@ -114,20 +119,20 @@ vim.keymap.set("o", "ac", "<Plug>(coc-classobj-a)", opts)
 
 -- Remap <C-f> and <C-b> to scroll float windows/popups
 ---@diagnostic disable-next-line: redefined-local
-local opts = {silent = true, nowait = true, expr = true}
-vim.keymap.set({"n", "i", "v"}, "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
-vim.keymap.set({"n", "i", "v"}, "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
+local opts = { silent = true, nowait = true, expr = true }
+vim.keymap.set({ "n", "i", "v" }, "<C-f>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-f>"', opts)
+vim.keymap.set({ "n", "i", "v" }, "<C-b>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-b>"', opts)
 
 -- Use CTRL-S for selections ranges
 -- Requires 'textDocument/selectionRange' support of language server
-vim.keymap.set({"n", "x"}, "[coc]s", "<Plug>(coc-range-select)", {silent = true})
+vim.keymap.set({ "n", "x" }, "[coc]s", "<Plug>(coc-range-select)", { silent = true })
 
 
 -- Add `:Format` command to format current buffer
 vim.api.nvim_create_user_command("Format", "call CocAction('format')", {})
 
 -- " Add `:Fold` command to fold current buffer
-vim.api.nvim_create_user_command("Fold", "call CocAction('fold', <f-args>)", {nargs = '?'})
+vim.api.nvim_create_user_command("Fold", "call CocAction('fold', <f-args>)", { nargs = '?' })
 
 -- Add `:OR` command for organize imports of the current buffer
 vim.api.nvim_create_user_command("OR", "call CocActionAsync('runCommand', 'editor.action.organizeImport')", {})
